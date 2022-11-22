@@ -9,9 +9,9 @@ import Pagination from '../../../components/Pagination';
 import ConfirmModal from '../../../components/Modal/ConfirmModal';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Root from "../../../components/Root";
-import {Link} from "react-router-dom";
-import {handlePageChange, getPageNumber} from "./../../../utils/pagination"
+import Root from '../../../components/Root';
+import {Link} from 'react-router-dom';
+import {handlePageChange, getPageNumber} from './../../../utils/pagination'
 
 class ConsumerGroupList extends Root {
   state = {
@@ -154,7 +154,7 @@ class ConsumerGroupList extends Root {
   deleteConsumerGroup = () => {
     const { selectedCluster, groupToDelete } = this.state;
 
-    this.removeApi(uriConsumerGroupDelete(selectedCluster, groupToDelete.id))
+    this.removeApi(uriConsumerGroupDelete(selectedCluster, encodeURIComponent(groupToDelete.id)))
       .then(() => {
         toast.success(`Consumer Group '${groupToDelete.id}' is deleted`);
         this.setState({ showDeleteModal: false, groupToDelete: {} }, () => this.getConsumerGroup());
@@ -243,7 +243,7 @@ class ConsumerGroupList extends Root {
           onDelete={group => {
             this.handleOnDelete(group);
           }}
-          onDetails={id => `/ui/${selectedCluster}/group/${id}`}
+          onDetails={id => `/ui/${selectedCluster}/group/${encodeURIComponent(id)}`}
           actions={
             roles.group && roles.group['group/delete']
               ? [constants.TABLE_DELETE, constants.TABLE_DETAILS]

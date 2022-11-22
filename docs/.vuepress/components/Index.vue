@@ -2,6 +2,13 @@
     <div>
         <!-- Start Featured Slider -->
 
+        <div id="kestra">
+
+            <a href="https://kestra.io" target="_blank">
+                Discover <img height="22px" src="https://kestra.io/logo.svg" alt="" />, infinitely scalable open source orchestration & scheduling platform.
+            </a>
+        </div>
+
         <section id="mu-hero">
             <div class="container">
                 <div class="row">
@@ -162,6 +169,11 @@
                                                 </div>
                                             </div>
 
+                                            <div class="col-md-2 col-sm-4 col-6">
+                                                <div class="mu-single-using">
+                                                    <img src="/assets/images/using/tui.png" alt="TUI">
+                                                </div>
+                                            </div>
 
                                             <div class="col-md-2 col-sm-4 col-6">
                                                 <div class="mu-single-using">
@@ -390,12 +402,12 @@
                                                 <p>These support consists in providing time for contribution to core
                                                     contributors.</p>
                                                 <div class="mu-about-info-companies text-center">
-                                                    <span class="mu-about-image mb-2">
+                                                    <span class="mu-about-image">
                                                         <img aria-hidden="true"
                                                              style="width:210px"
                                                              src="/assets/images/using/la-redoute.jpg" alt="La Redoute">
                                                     </span>
-                                                    <span class="mu-about-image mb-2">
+                                                    <span class="mu-about-image">
                                                         <a href="https://www.linkedin.com/company/polarising/"
                                                            target="_blank">
                                                             <img aria-hidden="true"
@@ -403,20 +415,12 @@
                                                                  src="/assets/images/polarising.png" alt="Polarising">
                                                         </a>
                                                     </span>
-                                                    <span class="mu-about-image mb-2">
+                                                    <span class="mu-about-image">
                                                         <a href="https://upstash.com/?utm_source=AKHQ"
                                                            target="_blank">
                                                             <img aria-hidden="true"
                                                                  style="width:210px"
                                                                  src="https://raw.githubusercontent.com/upstash/sponsorship/master/logo.png" alt="Upstash">
-                                                        </a>
-                                                    </span>
-                                                    <span class="mu-about-image">
-                                                        <a href="https://redpanda.com/?utm_source=AKHQ"
-                                                           target="_blank">
-                                                            <img aria-hidden="true"
-                                                                 style="width:210px"
-                                                                 src="https://user-images.githubusercontent.com/2064609/164302508-76ac1dfb-6c50-43d4-a092-ff275b25a032.svg" alt="Redpanda">
                                                         </a>
                                                     </span>
                                                 </div>
@@ -490,9 +494,29 @@ export default {
 
 
 <style lang="scss">
+@import "../styles/variable";
 .landing {
     @import "../styles/home/style";
     @import "../styles/home/akhq-theme";
+    header.navbar, #mu-hero {
+        margin-top: 29px;
+    }
+}
+
+#kestra {
+    z-index: 1000;
+    display: block;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 4px;
+    text-align: center;
+    background: $teal;
+    cursor: pointer;
+
+    a {
+        color: darken($teal, 25%);
+    }
 }
 
 </style>

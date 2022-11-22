@@ -2,8 +2,7 @@ import React from 'react';
 import Header from '../../Header';
 import Table from '../../../components/Table';
 import * as constants from '../../../utils/constants';
-import { uriNodes } from '../../../utils/endpoints';
-import { uriNodePartitions } from '../../../utils/endpoints';
+import { uriNodes, uriNodePartitions } from '../../../utils/endpoints';
 import Root from '../../../components/Root';
 
 class NodesList extends Root {
@@ -37,7 +36,7 @@ class NodesList extends Root {
         id: JSON.stringify(node.id) || '',
         host: `${node.host}:${node.port}` || '',
         rack: node.rack || '',
-        controller: nodes.controller.id === node.id ? 'True' : 'False' || '',
+        controller: nodes.controller && nodes.controller.id === node.id ? 'True' : 'False' || '',
         partition: undefined
       };
     });

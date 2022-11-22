@@ -1,7 +1,7 @@
 import React from 'react';
 import Table from '../../../../components/Table/Table';
 import { uriAclsByPrincipal } from '../../../../utils/endpoints';
-import Root from "../../../../components/Root";
+import Root from '../../../../components/Root';
 
 class AclTopics extends Root {
   state = {
@@ -31,6 +31,7 @@ class AclTopics extends Root {
     const tableData = data.acls.map(acl => {
       return {
         topic: acl.resource.name,
+        patterntype: acl.resource.patternType,
         host: acl.host,
         permission: acl.operation
       };
@@ -59,6 +60,13 @@ class AclTopics extends Root {
             id: 'topic',
             accessor: 'topic',
             colName: 'Topic',
+            type: 'text',
+            sortable: true
+          },
+          {
+            id: 'pattern-type',
+            accessor: 'patterntype',
+            colName: 'Pattern Type',
             type: 'text',
             sortable: true
           },

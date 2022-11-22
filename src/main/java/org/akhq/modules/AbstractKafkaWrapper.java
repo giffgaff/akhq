@@ -16,6 +16,7 @@ import org.apache.kafka.common.errors.ApiException;
 import org.apache.kafka.common.errors.ClusterAuthorizationException;
 import org.apache.kafka.common.errors.SecurityDisabledException;
 import org.apache.kafka.common.errors.TopicAuthorizationException;
+import org.apache.kafka.common.errors.UnsupportedVersionException;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
@@ -86,10 +87,17 @@ abstract public class AbstractKafkaWrapper {
             .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
-    public void createTopics(String clusterId, String name, int partitions, short replicationFactor) throws ExecutionException {
+    public void createTopics(String clusterId, String name, int partitions, short replicationFactor,
+        List<org.akhq.models.Config> configs) throws ExecutionException {
+        Map<String, String> kafkaTopicConfigs = new HashMap<>();
+
+        configs.forEach(c-> kafkaTopicConfigs.put(c.getName(), c.getValue()));
+
+        NewTopic topic = new NewTopic(name, partitions, replicationFactor).configs(kafkaTopicConfigs);
+
         Logger.call(kafkaModule
             .getAdminClient(clusterId)
-            .createTopics(Collections.singleton(new NewTopic(name, partitions, replicationFactor)))
+            .createTopics(Collections.singleton(topic))
             .all(),
             "Create Topics",
             Collections.singletonList(name)
@@ -254,7 +262,7 @@ abstract public class AbstractKafkaWrapper {
                             .allDescriptions()
                             .get();
                     } catch (ExecutionException e) {
-                        if (e.getCause() instanceof ClusterAuthorizationException || e.getCause() instanceof TopicAuthorizationException) {
+                        if (e.getCause() instanceof ClusterAuthorizationException || e.getCause() instanceof TopicAuthorizationException || e.getCause() instanceof UnsupportedVersionException) {
                             return new HashMap<>();
                         }
 

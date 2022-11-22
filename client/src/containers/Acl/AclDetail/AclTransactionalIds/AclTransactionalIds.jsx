@@ -1,7 +1,7 @@
 import React from 'react';
 import Table from '../../../../components/Table/Table';
 import { uriAclsByPrincipal } from '../../../../utils/endpoints';
-import Root from "../../../../components/Root";
+import Root from '../../../../components/Root';
 
 class AclTransactionalIds extends Root {
   state = {
@@ -30,7 +30,8 @@ class AclTransactionalIds extends Root {
   handleAcls = data => {
     const tableData = data.acls.map(acl => {
       return {
-        topic: acl.resource.name,
+        transactionalId: acl.resource.name,
+        patterntype: acl.resource.patternType,
         host: acl.host,
         permission: acl.operation
       };
@@ -56,9 +57,16 @@ class AclTransactionalIds extends Root {
         history={this.props.history}
         columns={[
           {
-            id: 'topic',
-            accessor: 'topic',
-            colName: 'Topic',
+            id: 'transactionalId',
+            accessor: 'transactionalId',
+            colName: 'Transactional Id',
+            type: 'text',
+            sortable: true
+          },
+          {
+            id: 'pattern-type',
+            accessor: 'patterntype',
+            colName: 'Pattern Type',
             type: 'text',
             sortable: true
           },
