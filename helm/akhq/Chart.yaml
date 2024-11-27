@@ -16,3 +16,8 @@ sources:
 maintainers:
   - name: tchiotludo
     email: tchiot.ludo@gmail.com
+
+dependencies:
+  - name: istio-virtualservice
+    version: 0.1.5
+    repository: s3://giffgaff-charts
