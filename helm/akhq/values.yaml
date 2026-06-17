@@ -3,7 +3,8 @@
 image:
   repository: tchiotludo/akhq
   tag: "" # uses Chart.AppVersion by default
-
+# Number of old deployment ReplicaSets to retain. The rest will be garbage collected.
+revisionHistoryLimit: 10
 # custom annotations (example: for prometheus)
 annotations: {}
   #prometheus.io/scrape: 'true'
@@ -11,6 +12,13 @@ annotations: {}
   #prometheus.io/path: '/prometheus'
 
 podAnnotations: {}
+
+configmapAnnotations: {}
+  # vault.security.banzaicloud.io/vault-role: akhq
+  # vault.security.banzaicloud.io/vault-serviceaccount: akhq
+
+secretAnnotations: {}
+  # same as configmapAnnotations
 
 # custom labels
 labels: {}
@@ -33,12 +41,12 @@ extraEnv: []
 #   value: "/any/additional/jars/desired.jar:/go/here.jar"
 
 ## Or you can also use configmap for the configuration...
-configuration:
-  akhq:
-    server:
-      access-log:
-        enabled: false
-        name: org.akhq.log.access
+configuration: {}
+  # akhq:
+  #   server:
+  #     access-log:
+  #       enabled: false
+  #       name: org.akhq.log.access
 
 ##... and secret for connection information
 existingSecrets: ""
@@ -60,14 +68,27 @@ secrets: {}
 #            basic-auth-username: basic-auth-user
 #            basic-auth-password: basic-auth-pass
 
-kafkaSecrets: []
 #Provide extra base64 encoded kubernetes secrets (keystore/truststore)
+kafkaSecrets: {}
+#  truststore.jks: MIIIE...
+#  keystore.jks: MIIIE...
 
 # Any extra volumes to define for the pod (like keystore/truststore)
 extraVolumes: []
+#   - name: certstore-secret
+#     secret:
+#       secretName: akhq-secrets
+#       items:
+#         - key: "truststore.jks"
+#           path: "truststore.jks"
+#         - key: "keystore.jks"
+#           path: "keystore.jks"
 
 # Any extra volume mounts to define for the akhq container
 extraVolumeMounts: []
+#   - name: certstore-secret
+#     mountPath: "/secrets"
+#     readOnly: true
 
 # Specify ServiceAccount for pod
 serviceAccountName: null
@@ -107,8 +128,11 @@ service:
   enabled: true
   type: ClusterIP
   port: 80
+  managementPort: 28081
   #httpNodePort: 32551
+  #managementNodePort: 32552
   labels: {}
+  loadBalancerIP: ""
   annotations:
     # cloud.google.com/load-balancer-type: "Internal"
 
@@ -118,8 +142,10 @@ ingress:
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
+  labels: {}
   paths:
     - /
+  pathType: "ImplementationSpecific"
   hosts:
     - akhq.demo.com
   tls: []
@@ -169,3 +195,4 @@ affinity: {}
 
 networkPolicy:
   enabled: true
+  labels: {}
